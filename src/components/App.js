@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useReducer } from 'react';
 import '../styles/App.css';
-import { useReducer } from 'react';
 
 const ACTIONS = {
   INCREMENT: "increment",
@@ -8,52 +7,65 @@ const ACTIONS = {
   SET_SUB_NUM: "setSubNum",
   SET_ADD_NUM: "setAddNum"
 };
+
 function reducer(state, action) {
   switch (action.type) {
     case ACTIONS.INCREMENT:
       return {
-        count: Number(state.count) + Number(state.addNum),
-        addNum: state.addNum,
-        subNum: state.subNum
+        ...state,
+        count: state.count + state.addNum
       };
- 
-   
+    case ACTIONS.DECREMENT:
+      return {
+        ...state,
+        count: state.count - state.subNum
+      };
     case ACTIONS.SET_ADD_NUM:
       return {
-        count: state.count,
-        subNum: state.subNum,
-        addNum: action.payload
+        ...state,
+        addNum: parseInt(action.payload)
+      };
+    case ACTIONS.SET_SUB_NUM:
+      return {
+        ...state,
+        subNum: parseInt(action.payload)
       };
     default:
-      return {
-        count: 10,
-        subNum: 1,
-        addNum: 1
-      };
+      return state;
   }
 }
 
-const App = () => {
- 
+const initialState = {
+  count: 10,
+  subNum: 1,
+  addNum: 1
+};
 
-  function onIncrement() {
+const App = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const onIncrement = () => {
     dispatch({ type: ACTIONS.INCREMENT });
-  }
-  function onDecrement() {
+  };
+
+  const onDecrement = () => {
     dispatch({ type: ACTIONS.DECREMENT });
-  }
+  };
+
   const onAddInput = (e) => {
     dispatch({
       type: ACTIONS.SET_ADD_NUM,
       payload: e.target.value
     });
   };
+
   const onSubtractInput = (e) => {
     dispatch({
       type: ACTIONS.SET_SUB_NUM,
       payload: e.target.value
     });
   };
+
   return (
     <div id="main">
       <input id='subtractInput' value={state.subNum} onChange={onSubtractInput} /><br />
@@ -64,6 +76,5 @@ const App = () => {
     </div>
   )
 }
-
 
 export default App;
