@@ -20,37 +20,37 @@ function reducer(state, action) {
         ...state,
         count: state.count - state.subNum
       };
-    case ACTIONS.SET_ADD_NUM:
-      return {
-        ...state,
-        addNum: parseInt(action.payload)
-      };
     case ACTIONS.SET_SUB_NUM:
       return {
         ...state,
         subNum: parseInt(action.payload)
+      };
+    case ACTIONS.SET_ADD_NUM:
+      return {
+        ...state,
+        addNum: parseInt(action.payload)
       };
     default:
       return state;
   }
 }
 
-const initialState = {
-  count: 10,
-  subNum: 1,
-  addNum: 1
-};
-
 const App = () => {
+  const initialState = {
+    count: 10,
+    subNum: 1,
+    addNum: 1
+  };
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const onIncrement = () => {
+  function onIncrement() {
     dispatch({ type: ACTIONS.INCREMENT });
-  };
+  }
 
-  const onDecrement = () => {
+  function onDecrement() {
     dispatch({ type: ACTIONS.DECREMENT });
-  };
+  }
 
   const onAddInput = (e) => {
     dispatch({
@@ -74,7 +74,7 @@ const App = () => {
       <button id='addBtn' onClick={onIncrement}>Add</button><br />
       <input id='addInput' onChange={onAddInput} value={state.addNum} />
     </div>
-  )
+  );
 }
 
 export default App;
